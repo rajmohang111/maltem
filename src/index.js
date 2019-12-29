@@ -84,16 +84,12 @@ class Card extends HTMLElement {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
 
     this.$input = this._shadowRoot.querySelector('input');
-    this.$input.addEventListener('input', this._handleChange.bind(this));
+    // this.$input.addEventListener('input', this._handleChange.bind(this));
 
    // this.$allSaySomething = this._shadowRoot.querySelectorAll('say-something');
   }
 
-  _handleChange() {
-    // this.$allSaySomething.forEach(element => {
-    //   element.setAttribute('text', this.$input.value)
-    // });
-  }
+
 }
 
 window.customElements.define('maltem-card', Card);

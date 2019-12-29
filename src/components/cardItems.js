@@ -87,7 +87,7 @@ class CardItems extends HTMLElement {
 
       if(this.cards[i].columnId === parseInt(this.id)) {
         template.content.querySelector('.list-items').innerHTML += `
-        <li>${this.cards[i].title}</li>    
+        <li id="${this.cards[i].id}">${this.cards[i].title}</li>    
         `;
       }
     }
@@ -95,8 +95,23 @@ class CardItems extends HTMLElement {
 
     this._shadowRoot.appendChild(template.content.cloneNode(true));
 
-    this.$headline = this._shadowRoot.querySelector('h2');
+    this.$listItem = this._shadowRoot.querySelectorAll('li');
+
+    this.$listItem.forEach((item) => {
+      item.addEventListener('click',this);
+    });
+
+
     this.$span = this._shadowRoot.querySelector('span');
+  }
+
+  handleEvent(e) {
+    this.$listItem.forEach((item) => {
+      if(item.id == e.target.id) {
+        item.textContent = this.cards.filter(item => item.id ==  e.target.id)[0].description;
+      }
+    });
+
   }
 
   connectedCallback() {
