@@ -50,46 +50,32 @@ template.innerHTML = `
   </section>
 `;
 
-
-
 class Card extends HTMLElement {
   constructor() {
     super();
-
     this._shadowRoot = this.attachShadow({ mode: 'open' });
-
-    console.log(' template.content',  template.content.querySelector('.lists-container').innerHTML);
-
-     this.columns =  [
-      {
-        "id": 1,
-        "title": "Column 1"
-      },
-      {
-        "id": 2,
-        "title": "Column 2"
-      }
-    ];
-
-    for(let i=0;i<this.columns.length;i++) {
-      template.content.querySelector('.lists-container').innerHTML += ` <div class="list">
-    
-      <h3 class="list-title">${this.columns[i].title}</h3>
-    
-      <card-items id="${this.columns[i].id}"></card-items>
-    
-      </div>`;
-    }
-
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
-
-    this.$input = this._shadowRoot.querySelector('input');
-    // this.$input.addEventListener('input', this._handleChange.bind(this));
-
-   // this.$allSaySomething = this._shadowRoot.querySelectorAll('say-something');
+    this.columns = [];
   }
 
+  connectedCallback() {
+    this.getColumns();
+  }
 
+  async getColumns() {
+    const columns = await fetch('http://localhost:3000/columns');
+    this.columns = await columns.json();
+    this._render();
+  };
+
+  _render() {
+    for (let i = 0; i < this.columns.length; i++) {
+      template.content.querySelector('.lists-container').innerHTML += ` <div class="list">
+    <h3 class="list-title">${this.columns[i].title}</h3>
+    <card-items id="${this.columns[i].id}"></card-items>
+    </div>`;
+    }
+    this._shadowRoot.appendChild(template.content.cloneNode(true));
+  };
 }
 
 window.customElements.define('maltem-card', Card);

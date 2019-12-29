@@ -44,65 +44,8 @@ template.innerHTML = `
 class CardItems extends HTMLElement {
   constructor() {
     super();
-
     this._shadowRoot = this.attachShadow({ mode: 'open' });
-
-    this.cards = [
-      {
-        "id": 1,
-        "title": "Card 1",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "columnId": 1
-    },
-    {
-        "id": 2,
-        "title": "Card 2",
-        "description": "Quisque et pellentesque sem.",
-        "columnId": 1
-    },
-    {
-        "id": 3,
-        "title": "Card 3",
-        "description": "Nulla porttitor erat a sollicitudin volutpat.",
-        "columnId": 1
-    },
-    {
-        "id": 4,
-        "title": "Card 4",
-        "description": "Quisque id scelerisque felis, sit amet scelerisque nunc.",
-        "columnId": 2
-    },
-    {
-        "id": 5,
-        "title": "Card 5",
-        "description": "Suspendisse posuere ipsum at dui lacinia, ut faucibus lectus mollis.",
-        "columnId": 2
-    }
-    ];
-
-
-     this.id = this.getAttribute('id');
-
-    for(let i=0;i<this.cards.length;i++) {
-
-      if(this.cards[i].columnId === parseInt(this.id)) {
-        template.content.querySelector('.list-items').innerHTML += `
-        <li id="${this.cards[i].id}">${this.cards[i].title}</li>    
-        `;
-      }
-    }
-
-
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
-
-    this.$listItem = this._shadowRoot.querySelectorAll('li');
-
-    this.$listItem.forEach((item) => {
-      item.addEventListener('click',this);
-    });
-
-
-    this.$span = this._shadowRoot.querySelector('span');
+    this.cards = [];
   }
 
   handleEvent(e) {
@@ -111,44 +54,35 @@ class CardItems extends HTMLElement {
         item.textContent = this.cards.filter(item => item.id ==  e.target.id)[0].description;
       }
     });
-
   }
 
   connectedCallback() {
-    if (!this.hasAttribute('color')) {
-      this.setAttribute('color', 'orange');
-    }
+    this.getCards();
+  };
 
-    if (!this.hasAttribute('text')) {
-      this.setAttribute('text', '');
-    }
-
-
-
+  async getCards() {
+    const cards = await fetch('http://localhost:3000/cards');
+    this.cards = await cards.json();
     this._render();
-  }
-
-  static get observedAttributes() {
-    return ['color', 'text'];
-  }
-
-  attributeChangedCallback(name, oldVal, newVal) {
-    switch (name) {
-      case 'color':
-        this._color = newVal;
-        break;
-      case 'text':
-        this._text = newVal;
-        break;
-    };
-
-    this._render();
-  }
+  };
 
   _render() {
-   // this.$headline.style.color = this._color;
-  //  this.$span.innerHTML = this._text;
-  }
+    this.id = this.getAttribute('id');
+      for(let i=0;i<this.cards.length;i++) {
+      if(this.cards[i].columnId === parseInt(this.id)) {
+        template.content.querySelector('.list-items').innerHTML += `
+        <li id="${this.cards[i].id}">${this.cards[i].title}</li>    
+        `;
+      }
+    }
+    this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this.$listItem = this._shadowRoot.querySelectorAll('li');
+    this.$listItem.forEach((item) => {
+      item.addEventListener('click',this);
+    });
+    this.$span = this._shadowRoot.querySelector('span');
+  };
+
 }
 
 window.customElements.define('card-items', CardItems);
