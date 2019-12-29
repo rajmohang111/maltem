@@ -56,7 +56,7 @@ class Card extends HTMLElement {
     
       <h3 class="list-title">${this.columns[i].title}</h3>
     
-      <card-items></card-items>
+      <card-items id="${this.columns[i].id}"></card-items>
     
       </div>`;
     }

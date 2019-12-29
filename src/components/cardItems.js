@@ -53,37 +53,43 @@ class CardItems extends HTMLElement {
         "title": "Card 1",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "columnId": 1
-      },
-      {
+    },
+    {
         "id": 2,
         "title": "Card 2",
         "description": "Quisque et pellentesque sem.",
         "columnId": 1
-      },
-      {
+    },
+    {
         "id": 3,
         "title": "Card 3",
         "description": "Nulla porttitor erat a sollicitudin volutpat.",
         "columnId": 1
-      },
-      {
+    },
+    {
         "id": 4,
         "title": "Card 4",
         "description": "Quisque id scelerisque felis, sit amet scelerisque nunc.",
         "columnId": 2
-      },
-      {
+    },
+    {
         "id": 5,
         "title": "Card 5",
         "description": "Suspendisse posuere ipsum at dui lacinia, ut faucibus lectus mollis.",
         "columnId": 2
-      }
+    }
     ];
 
+
+     this.id = this.getAttribute('id');
+
     for(let i=0;i<this.cards.length;i++) {
-      template.content.querySelector('.list-items').innerHTML += `
-      <li>${this.cards[i].title}</li>    
-      `;
+
+      if(this.cards[i].columnId === parseInt(this.id)) {
+        template.content.querySelector('.list-items').innerHTML += `
+        <li>${this.cards[i].title}</li>    
+        `;
+      }
     }
 
 
