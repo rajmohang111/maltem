@@ -22,15 +22,6 @@ class AddCardForm extends HTMLElement {
         this._render();
     };
 
-    async postCards(card) {
-        const cards = await fetch('http://localhost:3000/cards', {
-            method: 'post', body: JSON.stringify(card), headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        window.location.reload(false);
-    };
-
     addCard(e) {
         e.preventDefault();
         const cardName = this._shadowRoot.querySelector('#cardName').value;
@@ -47,7 +38,6 @@ class AddCardForm extends HTMLElement {
     };
 
     _render() {
-        this.id = this.getAttribute('id');
         this._shadowRoot.appendChild(cardtemplate.content.cloneNode(true));
         this.$addCardButton = this._shadowRoot.querySelector('#add-card');
         this.$addCardButton.addEventListener('click', this.addCard.bind(this));

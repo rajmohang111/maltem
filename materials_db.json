@@ -23,16 +23,16 @@
       "id": 2
     },
     {
+      "id": 3,
       "title": "Card 3",
       "description": "Nulla porttitor erat a sollicitudin volutpat.",
-      "columnId": 2,
-      "id": 3
+      "columnId": 1
     },
     {
+      "id": 4,
       "title": "Card 4",
       "description": "Quisque id scelerisque felis, sit amet scelerisque nunc.",
-      "columnId": 1,
-      "id": 4
+      "columnId": 1
     },
     {
       "title": "Card 2",
@@ -41,10 +41,10 @@
       "id": 5
     },
     {
+      "id": 6,
       "title": "Card 1",
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "columnId": 1,
-      "id": 6
+      "columnId": 2
     },
     {
       "title": "Card 2",
@@ -53,10 +53,10 @@
       "id": 7
     },
     {
+      "id": 8,
       "title": "Card 1",
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "columnId": 1,
-      "id": 8
+      "columnId": 2
     },
     {
       "title": "Card 2",
@@ -257,10 +257,10 @@
       "id": 41
     },
     {
+      "id": 42,
       "title": "1",
       "description": "1",
-      "columnId": 1,
-      "id": 42
+      "columnId": 2
     },
     {
       "title": "22",

@@ -72,64 +72,28 @@ class CardItems extends HTMLElement {
     this._render();
   };
 
-  async postCards(card) {
-    const cards = await fetch('http://localhost:3000/cards', {
-      method: 'post', body: JSON.stringify(card), headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    window.location.reload(false);
-  };
-
-  async updateCards(id, card) {
-    const cards = await fetch(`http://localhost:3000/cards/${id}`, {
-      method: 'put', body: JSON.stringify(card), headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    window.location.reload(false);
-  };
-
   dragstart(e) {
     start = e.target.attributes.column.value;
     target = e.target;
   }
 
-
-  dragover(e) {
-    e.preventDefault();
-  }
-
   dragDrop(e) {
     //get Drop details.
     if (e.target.attributes.column.value !== start) {
-      this.updateCards(target.id, {
-        "title": target.innerHTML,
-        "description": target.attributes.desc.value,
-        "columnId": parseInt(this.id)
-      });
+      this.dispatchEvent(new CustomEvent('updateCards', {
+        detail: {
+          "id": target.id,
+          "title": target.innerHTML,
+          "description": target.attributes.desc.value,
+          "columnId": parseInt(this.id)
+        }
+    }));
     }
   }
 
-  addCard(e) {
-    e.preventDefault();
-    const cardName = this._shadowRoot.querySelector('#cardName').value;
-    const cardDescription = this._shadowRoot.querySelector('#cardDescription').value;
-    if (cardName != '' && cardDescription != '') {
-      this.postCards({
-        "title": cardName,
-        "description": cardDescription,
-        "columnId": parseInt(this.id)
-      });
-    }
-  };
-
   _render() {
     cardtemplate.content.querySelector('.list-items').innerHTML = '';
-
-
     this.id = this.getAttribute('id');
-
     for (let i = 0; i < this.cards.length; i++) {
       if (this.cards[i].columnId === parseInt(this.id)) {
         cardtemplate.content.querySelector('.list-items').innerHTML += `
@@ -138,13 +102,10 @@ class CardItems extends HTMLElement {
       }
     }
     this._shadowRoot.appendChild(cardtemplate.content.cloneNode(true));
-
     this.$listItem = this._shadowRoot.querySelectorAll('li');
     this.$listItem.forEach((item) => {
       item.addEventListener('click', this);
       item.addEventListener('dragstart', this.dragstart);
-      item.addEventListener('dragend', this.dragover);
-      item.addEventListener('dragover', this.dragover);
       item.addEventListener('drop', this.dragDrop.bind(this));
     });
     this.$span = this._shadowRoot.querySelector('span');

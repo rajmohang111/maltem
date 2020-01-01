@@ -79,13 +79,17 @@ class Card extends HTMLElement {
     this.getColumns();
   };
 
+  async updateCards(e) {
+    const cards = await fetch(`http://localhost:3000/cards/${e.detail.id}`, {
+      method: 'put', body: JSON.stringify(e.detail), headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    this.getColumns();
+  };
 
-  handleEvent(e) {
-    console.log(e);
-  }
 
   _render() {
-    console.log('_shadowRoot', this._shadowRoot);
     if (this._shadowRoot.querySelector('.container'))
       this._shadowRoot.querySelector('.container').innerHTML = '';
 
@@ -98,6 +102,13 @@ class Card extends HTMLElement {
     </div>`;
 
     }
+    
+    this.$cards = this._shadowRoot.querySelectorAll('card-items');
+    
+    this.$cards.forEach((item) => {
+      item.addEventListener('updateCards', this.updateCards.bind(this));
+    });
+
     this.$listItem = this._shadowRoot.querySelectorAll('add-card-form');
     this.$listItem.forEach((item) => {
       item.addEventListener('onSubmit', this.postCards.bind(this));
