@@ -1,42 +1,44 @@
 import './components/cardItems.js';
+import './components/addCardForm.js';
 
 const template = document.createElement('template');
 
 template.innerHTML = `
 <style>
-/* Lists */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.card {
+  height: 400px;
+  width: 300px;
+  margin: 10px;
+  border: 1px solid black;
+}
 
 .lists-container::-webkit-scrollbar {
-    height: 2.4rem;
+  height: 2.4rem;
 }
 
 .lists-container::-webkit-scrollbar-thumb {
-    background-color: #66a3c7;
-    border: 0.8rem solid #0079bf;
-    border-top-width: 0;
+  background-color: #66a3c7;
+  border: 0.8rem solid #0079bf;
+  border-top-width: 0;
 }
 
 .lists-container {
-    display: flex;
-    align-items: start;
-    padding: 0 0.8rem 0.8rem;
-    overflow-x: auto;
-    /* height: calc(100vh - 8.6rem); */
+  padding: 0 0.8rem 0.8rem;
+  overflow-x: auto;
+  height: 300px;
 }
 
 .list {
-    flex: 0 0 27rem;
-    display: flex;
-    flex-direction: column;
-    background-color: #e2e4e6;
-    max-height: calc(100vh - 11.8rem);
-    border-radius: 0.3rem;
-    margin-right: 1rem;
-}
-
-
-.list:last-of-type {
-  margin-right: 0;
+  max-height: 300px;
+  border-radius: 0.3rem;
+  margin-right: 1rem;
 }
 
 .list-title {
@@ -46,8 +48,8 @@ template.innerHTML = `
   padding: 1rem;
 }
 </style>
-<section class="lists-container">
-  </section>
+<div class="container">
+  </div>
 `;
 
 class Card extends HTMLElement {
@@ -58,6 +60,7 @@ class Card extends HTMLElement {
   }
 
   connectedCallback() {
+    this._shadowRoot.appendChild(template.content.cloneNode(true));
     this.getColumns();
   }
 
@@ -67,14 +70,39 @@ class Card extends HTMLElement {
     this._render();
   };
 
+  async postCards(e) {
+    const cards = await fetch('http://localhost:3000/cards', {
+      method: 'post', body: JSON.stringify(e.detail), headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    this.getColumns();
+  };
+
+
+  handleEvent(e) {
+    console.log(e);
+  }
+
   _render() {
+    console.log('_shadowRoot', this._shadowRoot);
+    if (this._shadowRoot.querySelector('.container'))
+      this._shadowRoot.querySelector('.container').innerHTML = '';
+
     for (let i = 0; i < this.columns.length; i++) {
-      template.content.querySelector('.lists-container').innerHTML += ` <div class="list">
+      this._shadowRoot.querySelector('.container').innerHTML += ` <div class="card">
+      <section class="lists-container"> <div class="list">
     <h3 class="list-title">${this.columns[i].title}</h3>
     <card-items id="${this.columns[i].id}"></card-items>
+    </div></section><add-card-form id="${this.columns[i].id}"></add-card-form>
     </div>`;
+
     }
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this.$listItem = this._shadowRoot.querySelectorAll('add-card-form');
+    this.$listItem.forEach((item) => {
+      item.addEventListener('onSubmit', this.postCards.bind(this));
+    });
+
   };
 }
 

@@ -2,49 +2,7 @@
 const cardtemplate = document.createElement('template');
 
 cardtemplate.innerHTML = `
-                            <style>
-                            
-                            .add-card-btn {
-                              display: block;
-                              text-align: left;
-                              cursor: pointer;
-                             }
-
-                             .field-list {
-                              flex: 1;
-                              display: flex;
-                              flex-direction: column;
-                              align-content: start;
-                              padding: 0 0.6rem 0.5rem;
-                              overflow-y: auto;
-                            }
-
-                            .field-list li {
-                              font-size: 1.4rem;
-                              font-weight: 400;
-                              line-height: 1.3;
-                              padding: 0 0 0.65rem 0;
-                              color: #4d4d4d;
-                              cursor: pointer;
-                            }
-
-                            input {
-                              line-height: 2;
-                              width: 24rem;
-                            }
-
-                            button {
-                              background-color: #0079bf; /* Green */
-                              border: none;
-                              color: white;
-                              text-align: center;
-                              text-decoration: none;
-                              display: inline-block;
-                              font-size: 16px;
-                              margin: 4px 2px;
-                              cursor: pointer;
-                            }
-                      
+                            <style>                  
                               </style>
                             <form>
                             <ul class="field-list">
@@ -78,11 +36,13 @@ class AddCardForm extends HTMLElement {
         const cardName = this._shadowRoot.querySelector('#cardName').value;
         const cardDescription = this._shadowRoot.querySelector('#cardDescription').value;
         if (cardName != '' && cardDescription != '') {
-            this.postCards({
-                "title": cardName,
-                "description": cardDescription,
-                "columnId": parseInt(this.id)
-            });
+            this.dispatchEvent(new CustomEvent('onSubmit', {
+                detail: {
+                    title: cardName,
+                    description: cardDescription,
+                    columnId: parseInt(this.id)
+                }
+            }));
         }
     };
 
@@ -92,8 +52,6 @@ class AddCardForm extends HTMLElement {
         this.$addCardButton = this._shadowRoot.querySelector('#add-card');
         this.$addCardButton.addEventListener('click', this.addCard.bind(this));
     };
-
-
 }
 
 window.customElements.define('add-card-form', AddCardForm);

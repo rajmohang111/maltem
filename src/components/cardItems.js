@@ -1,4 +1,3 @@
-import './addCardForm.js';
 
 let start = 0;
 let target = undefined;
@@ -6,98 +5,48 @@ let target = undefined;
 const cardtemplate = document.createElement('template');
 
 cardtemplate.innerHTML = `
-                            <style>
-                            .list-items {
-                              flex: 1;
-                              display: flex;
-                              flex-direction: column;
-                              align-content: start;
-                              padding: 0 0.6rem 0.5rem;
-                              overflow-y: auto;
-                              height : 200px;
-                            }
-                            .list-items::-webkit-scrollbar {
-                              width: 1.6rem;
-                            }
-                            .list-items::-webkit-scrollbar-thumb {
-                              background-color: #c4c9cc;
-                              border-right: 0.6rem solid #e2e4e6;
-                            }
-                            .list-items li {
-                              font-size: 1.4rem;
-                              font-weight: 400;
-                              line-height: 1.3;
-                              background-color: #fff;
-                              padding: 0.65rem 0.6rem;
-                              color: #4d4d4d;
-                              border-bottom: 0.1rem solid #ccc;
-                              border-radius: 0.3rem;
-                              margin-bottom: 0.6rem;
-                              word-wrap: break-word;
-                              cursor: pointer;
-                            }
-                            .list-items li:last-of-type {
-                              margin-bottom: 0;
-                            }
-                            .list-items li:hover {
-                              background-color: #eee;
-                            }
+<style>
+/* Lists */
+.list-items {
+    align-content: start;
+    padding: 0 0.6rem 0.5rem;
+    overflow-y: auto;
+}
 
-                            .add-card-btn {
-                              display: block;
-                              text-align: left;
-                              cursor: pointer;
-                             }
+.list-items::-webkit-scrollbar {
+    width: 1.6rem;
+}
 
-                             .field-list {
-                              flex: 1;
-                              display: flex;
-                              flex-direction: column;
-                              align-content: start;
-                              padding: 0 0.6rem 0.5rem;
-                              overflow-y: auto;
-                            }
+.list-items::-webkit-scrollbar-thumb {
+    background-color: #c4c9cc;
+    border-right: 0.6rem solid #e2e4e6;
+}
+.list-items li {
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.3;
+  background-color: #fff;
+  padding: 0.65rem 0.6rem;
+  color: #4d4d4d;
+  border-bottom: 0.1rem solid #ccc;
+  border-radius: 0.3rem;
+  margin-bottom: 0.6rem;
+  word-wrap: break-word;
+  cursor: pointer;
+}
 
-                            .field-list li {
-                              font-size: 1.4rem;
-                              font-weight: 400;
-                              line-height: 1.3;
-                              padding: 0 0 0.65rem 0;
-                              color: #4d4d4d;
-                              cursor: pointer;
-                            }
+.list-items li:last-of-type {
+  margin-bottom: 0;
+}
 
-                            input {
-                              line-height: 2;
-                              width: 24rem;
-                            }
+.list-items li:hover {
+  background-color: #eee;
+}
 
-                            button {
-                              background-color: #0079bf; /* Green */
-                              border: none;
-                              color: white;
-                              text-align: center;
-                              text-decoration: none;
-                              display: inline-block;
-                              font-size: 16px;
-                              margin: 4px 2px;
-                              cursor: pointer;
-                            }
-                      
-                              </style>
+                              </style>                      
                               <ul class="list-items">
                             </ul>	
-                            <add-card-form></add-card-form>
                             `;
-
-                            // <form>
-                            // <ul class="field-list">
-                            // <li><input type="text" name="cardName" id="cardName" placeholder="Name"/></li>
-                            // <li><input type="text" name="cardDescription" id="cardDescription" placeholder="Description"/></li>
-                            // <li><button id="add-card" class="add-card-btn btn">Add a card</button></li>
-                            // </ul>
-                            // </form>
-                         
 class CardItems extends HTMLElement {
   constructor() {
     super();
@@ -166,7 +115,7 @@ class CardItems extends HTMLElement {
     e.preventDefault();
     const cardName = this._shadowRoot.querySelector('#cardName').value;
     const cardDescription = this._shadowRoot.querySelector('#cardDescription').value;
-    if(cardName != '' && cardDescription != '') {
+    if (cardName != '' && cardDescription != '') {
       this.postCards({
         "title": cardName,
         "description": cardDescription,
@@ -177,10 +126,9 @@ class CardItems extends HTMLElement {
 
   _render() {
     cardtemplate.content.querySelector('.list-items').innerHTML = '';
-    
+
 
     this.id = this.getAttribute('id');
-    cardtemplate.content.querySelector('add-card-form').setAttribute('id', this.id)
 
     for (let i = 0; i < this.cards.length; i++) {
       if (this.cards[i].columnId === parseInt(this.id)) {
@@ -190,11 +138,6 @@ class CardItems extends HTMLElement {
       }
     }
     this._shadowRoot.appendChild(cardtemplate.content.cloneNode(true));
-
-    // this.$addCardButton = this._shadowRoot.querySelector('#add-card');
-
-
-    // this.$addCardButton.addEventListener('click', this.addCard.bind(this));
 
     this.$listItem = this._shadowRoot.querySelectorAll('li');
     this.$listItem.forEach((item) => {
