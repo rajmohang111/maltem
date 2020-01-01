@@ -1,4 +1,5 @@
 
+
 const cardtemplate = document.createElement('template');
 
 cardtemplate.innerHTML = `
@@ -19,20 +20,6 @@ input[type=text]
     margin-top:10px;
 }
 
-textarea{
-	font-style: italic;
-	padding: 0px 0px 0px 0px;
-    background: transparent;
-    margin-top:10px;
-	outline: none;
-	border: none;
-	border-bottom: 1px dashed #83A4C5;
-	width: 275px;
-	overflow: hidden;
-	resize:none;
-	height:20px;
-}
-
 input[type=submit] {
 	background: #576E86;
     border: none;
@@ -47,26 +34,11 @@ input[type=submit] {
 <label for="field1">
 <input type="text" name="cardName" id="cardName" placeholder="Name"  required="true"/>
 </label>
-<label for="field4">
-<textarea name="cardDescription" id="cardDescription" placeholder="Description" required="true"></textarea>
-</label>
-<label>
-<input type="submit" id="add-card" class="add-card-btn btn" value="Add a card" />
+<input type="submit" id="add-card" class="add-card-btn btn" value="Add a Column" />
 </label>
 </form>`;
 
-{/*
-    <button id="add-card" class="add-card-btn btn">Add a card</button>
-
-    <form>
-<ul class="field-list">
-<li><input type="text" name="cardName" id="cardName" placeholder="Name"/></li>
-<li><input type="text" name="cardDescription" id="cardDescription" placeholder="Description"/></li>
-<li><button id="add-card" class="add-card-btn btn">Add a card</button></li>
-</ul>
-</form> */}
-
-class AddCardForm extends HTMLElement {
+class AddColumnForm extends HTMLElement {
     constructor() {
         super();
         this._shadowRoot = this.attachShadow({ mode: 'open' });
@@ -79,13 +51,10 @@ class AddCardForm extends HTMLElement {
     addCard(e) {
         e.preventDefault();
         const cardName = this._shadowRoot.querySelector('#cardName').value;
-        const cardDescription = this._shadowRoot.querySelector('#cardDescription').value;
-        if (cardName != '' && cardDescription != '') {
-            this.dispatchEvent(new CustomEvent('onSubmit', {
+        if (cardName != '') {
+            this.dispatchEvent(new CustomEvent('addColumn', {
                 detail: {
                     title: cardName,
-                    description: cardDescription,
-                    columnId: parseInt(this.id)
                 }
             }));
         }
@@ -98,4 +67,4 @@ class AddCardForm extends HTMLElement {
     };
 }
 
-window.customElements.define('add-card-form', AddCardForm);
+window.customElements.define('add-column-form', AddColumnForm);

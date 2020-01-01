@@ -1,5 +1,6 @@
 import './components/cardItems.js';
 import './components/addCardForm.js';
+import './components/addColumnForm.js';
 
 const template = document.createElement('template');
 
@@ -13,7 +14,6 @@ template.innerHTML = `
 }
 
 .card {
-  height: 400px;
   width: 300px;
   margin: 10px;
   border: 1px solid black;
@@ -48,6 +48,9 @@ template.innerHTML = `
   padding: 1rem;
 }
 </style>
+<div id="column" class="card">
+ <add-column-form></add-column-form>
+</div>
 <div class="container">
   </div>
 `;
@@ -79,6 +82,15 @@ class Card extends HTMLElement {
     this.getColumns();
   };
 
+  async postColumn(e) {
+    const cards = await fetch('http://localhost:3000/columns', {
+      method: 'post', body: JSON.stringify(e.detail), headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    this.getColumns();
+  };
+
   async updateCards(e) {
     const cards = await fetch(`http://localhost:3000/cards/${e.detail.id}`, {
       method: 'put', body: JSON.stringify(e.detail), headers: {
@@ -102,12 +114,17 @@ class Card extends HTMLElement {
     </div>`;
 
     }
-    
+
     this.$cards = this._shadowRoot.querySelectorAll('card-items');
-    
+
     this.$cards.forEach((item) => {
       item.addEventListener('updateCards', this.updateCards.bind(this));
     });
+
+    this.$columnForm = this._shadowRoot.querySelector('add-column-form');
+
+    this.$columnForm.addEventListener('addColumn', this.postColumn.bind(this));
+
 
     this.$listItem = this._shadowRoot.querySelectorAll('add-card-form');
     this.$listItem.forEach((item) => {
