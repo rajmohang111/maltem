@@ -47,6 +47,10 @@ template.innerHTML = `
   color: #333;
   padding: 1rem;
 }
+
+.delete {
+  float: right;
+}
 </style>
 <div id="column" class="card">
  <add-column-form></add-column-form>
@@ -58,7 +62,8 @@ template.innerHTML = `
 class Card extends HTMLElement {
   constructor() {
     super();
-    this._shadowRoot = this.attachShadow({ mode: 'open' });
+    // this._shadowRoot = this.attachShadow({ mode: 'open' });
+    this._shadowRoot = this;
     this.columns = [];
   }
 
@@ -74,6 +79,7 @@ class Card extends HTMLElement {
   };
 
   async postCards(e) {
+    e.stopPropagation();
     const cards = await fetch('http://localhost:3000/cards', {
       method: 'post', body: JSON.stringify(e.detail), headers: {
         'Content-Type': 'application/json'
@@ -83,6 +89,7 @@ class Card extends HTMLElement {
   };
 
   async postColumn(e) {
+    e.stopPropagation();
     const cards = await fetch('http://localhost:3000/columns', {
       method: 'post', body: JSON.stringify(e.detail), headers: {
         'Content-Type': 'application/json'
@@ -92,6 +99,7 @@ class Card extends HTMLElement {
   };
 
   async updateCards(e) {
+    e.stopPropagation();
     const cards = await fetch(`http://localhost:3000/cards/${e.detail.id}`, {
       method: 'put', body: JSON.stringify(e.detail), headers: {
         'Content-Type': 'application/json'
@@ -99,6 +107,28 @@ class Card extends HTMLElement {
     });
     this.getColumns();
   };
+
+  async deleteCard(e) {
+    e.stopPropagation();
+    const cards = await fetch(`http://localhost:3000/cards/${e.detail.id}`, {
+      method: 'delete', headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    this.getColumns();
+  };
+
+
+  async deleteColumn(e) {
+    e.stopPropagation();
+    await fetch(`http://localhost:3000/columns/${e.target.id}`, {
+      method: 'delete', headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    this.getColumns();
+  };
+
 
 
   _render() {
@@ -108,7 +138,7 @@ class Card extends HTMLElement {
     for (let i = 0; i < this.columns.length; i++) {
       this._shadowRoot.querySelector('.container').innerHTML += ` <div class="card">
       <section class="lists-container"> <div class="list">
-    <h3 class="list-title">${this.columns[i].title}</h3>
+    <h3 class="list-title">${this.columns[i].title}<i id="${this.columns[i].id}" class="delete fa fa-trash"></i></h3>
     <card-items id="${this.columns[i].id}"></card-items>
     </div></section><add-card-form id="${this.columns[i].id}"></add-card-form>
     </div>`;
@@ -119,16 +149,21 @@ class Card extends HTMLElement {
 
     this.$cards.forEach((item) => {
       item.addEventListener('updateCards', this.updateCards.bind(this));
+      item.addEventListener('deleteCard', this.deleteCard.bind(this));
     });
 
     this.$columnForm = this._shadowRoot.querySelector('add-column-form');
 
     this.$columnForm.addEventListener('addColumn', this.postColumn.bind(this));
 
-
     this.$listItem = this._shadowRoot.querySelectorAll('add-card-form');
     this.$listItem.forEach((item) => {
       item.addEventListener('onSubmit', this.postCards.bind(this));
+    });
+
+    this.$delete = this._shadowRoot.querySelectorAll('.delete');
+    this.$delete.forEach((item) => {
+      item.addEventListener('click', this.deleteColumn.bind(this));
     });
 
   };
