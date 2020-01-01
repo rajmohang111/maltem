@@ -72,9 +72,15 @@ class CardItems extends HTMLElement {
     this._render();
   };
 
+
   dragstart(e) {
     start = e.target.attributes.column.value;
     target = e.target;
+  }
+
+
+  dragover(e) {
+    e.preventDefault();
   }
 
   dragDrop(e) {
@@ -106,6 +112,8 @@ class CardItems extends HTMLElement {
     this.$listItem.forEach((item) => {
       item.addEventListener('click', this);
       item.addEventListener('dragstart', this.dragstart);
+      item.addEventListener('dragend', this.dragover);
+      item.addEventListener('dragover', this.dragover);
       item.addEventListener('drop', this.dragDrop.bind(this));
     });
     this.$span = this._shadowRoot.querySelector('span');

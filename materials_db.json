@@ -35,10 +35,10 @@
       "columnId": 1
     },
     {
+      "id": 5,
       "title": "Card 2",
       "description": "Quisque et pellentesque sem.",
-      "columnId": 2,
-      "id": 5
+      "columnId": 1
     },
     {
       "id": 6,
