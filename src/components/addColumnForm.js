@@ -1,8 +1,8 @@
 
 
-const cardtemplate = document.createElement('template');
+const columnTemplate = document.createElement('template');
 
-cardtemplate.innerHTML = `
+columnTemplate.innerHTML = `
 <style type="text/css">
 .form-style-4{
 	padding: 10px;
@@ -48,22 +48,22 @@ class AddColumnForm extends HTMLElement {
         this._render();
     };
 
-    addCard(e) {
-        e.preventDefault();
-        const cardName = this._shadowRoot.querySelector('#cardName').value;
-        if (cardName != '') {
-            this.dispatchEvent(new CustomEvent('addColumn', {
-                detail: {
-                    title: cardName,
-                }
-            }));
-        }
-    };
-
     _render() {
-        this._shadowRoot.appendChild(cardtemplate.content.cloneNode(true));
-        this.$addCardButton = this._shadowRoot.querySelector('#add-card');
-        this.$addCardButton.addEventListener('click', this.addCard.bind(this));
+        this._shadowRoot.appendChild(columnTemplate.content.cloneNode(true));
+        this.$form = this._shadowRoot.querySelector('form');
+        this.$form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const cardName = this._shadowRoot.querySelector('#cardName').value;
+            if (cardName != '') {
+                this.dispatchEvent(new CustomEvent('addColumn', {
+                    detail: {
+                        title: cardName,
+                    }
+                }));
+
+                this._shadowRoot.querySelector('#cardName').value = '';
+            }
+        });
     };
 }
 

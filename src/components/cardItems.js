@@ -58,6 +58,18 @@ class CardItems extends HTMLElement {
     this.cards = [];
   }
 
+  static get observedAttributes() {
+    return ['id'];
+  }
+  
+
+  attributeChangedCallback(name, oldValue, newValue) {
+   if(oldValue !== newValue) {
+    this.id = this.getAttribute('id');
+    this.getCards(this.id);
+   }
+  }
+
   handleEvent(e) {
     this.$listItem.forEach((item) => {
       if (item.id == e.target.id) {
@@ -67,8 +79,7 @@ class CardItems extends HTMLElement {
   }
 
   connectedCallback() {
-    this.id = this.getAttribute('id');
-    this.getCards(this.id);
+
   };
 
   async getCards(id) {
@@ -103,19 +114,20 @@ class CardItems extends HTMLElement {
 
   delete(e) {
     console.log(e);
-      this.dispatchEvent(new CustomEvent('deleteCard', {
-        detail: {
-          "id": parseInt(this.id)
-        }
-      }));
+    this.dispatchEvent(new CustomEvent('deleteCard', {
+      detail: {
+        "id": parseInt(this.id)
+      }
+    }));
   }
 
   _render() {
+    console.log('render');
     this._shadowRoot.appendChild(cardtemplate.content.cloneNode(true));
-    
-    if(this._shadowRoot.querySelector('.list-items').innerHTML)
-         this._shadowRoot.querySelector('.list-items').innerHTML = '';
-    
+
+    if (this._shadowRoot.querySelector('.list-items').innerHTML)
+      this._shadowRoot.querySelector('.list-items').innerHTML = '';
+
     for (let i = 0; i < this.cards.length; i++) {
       if (this.cards[i].columnId === parseInt(this.id)) {
         this._shadowRoot.querySelector('.list-items').innerHTML += `

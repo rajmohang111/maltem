@@ -53,7 +53,8 @@ template.innerHTML = `
 }
 </style>
 <div id="column" class="card">
- <add-column-form></add-column-form>
+<add-column-form></add-column-form>
+
 </div>
 <div class="container">
   </div>
@@ -69,6 +70,8 @@ class Card extends HTMLElement {
 
   connectedCallback() {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this.$columnForm = this._shadowRoot.querySelector('add-column-form');
+    this.$columnForm.addEventListener('addColumn', this.postColumn.bind(this));
     this.getColumns();
   }
 
@@ -89,7 +92,6 @@ class Card extends HTMLElement {
   };
 
   async postColumn(e) {
-    e.stopPropagation();
     const cards = await fetch('http://localhost:3000/columns', {
       method: 'post', body: JSON.stringify(e.detail), headers: {
         'Content-Type': 'application/json'
@@ -135,15 +137,46 @@ class Card extends HTMLElement {
     if (this._shadowRoot.querySelector('.container'))
       this._shadowRoot.querySelector('.container').innerHTML = '';
 
+      let innerHTML = '';
     for (let i = 0; i < this.columns.length; i++) {
-      this._shadowRoot.querySelector('.container').innerHTML += ` <div class="card">
-      <section class="lists-container"> <div class="list">
-    <h3 class="list-title">${this.columns[i].title}<i id="${this.columns[i].id}" class="delete fa fa-trash"></i></h3>
-    <card-items id="${this.columns[i].id}"></card-items>
-    </div></section><add-card-form id="${this.columns[i].id}"></add-card-form>
-    </div>`;
 
+      let $card = document.createElement('div');
+      $card.classList.add("card");
+
+      let $section = document.createElement('section');
+      $section.classList.add("lists-container");
+
+      let $list = document.createElement('div');
+      $list.classList.add("list");
+
+      console.log( this.columns[i].id);
+
+      let $item = document.createElement('card-items');
+      $item.setAttribute('id', this.columns[i].id);
+
+      let $addCardForm = document.createElement('add-card-form');
+      $addCardForm.setAttribute('id',this.columns[i].id);
+
+      let $h3 = document.createElement('h3');
+      $h3.classList.add("list-title");
+      $h3.textContent = this.columns[i].title;
+
+      let $i = document.createElement('i');
+      $i.classList.add("delete");
+      $i.classList.add("fa");
+      $i.classList.add("fa-trash");
+      $i.setAttribute('id', this.columns[i].id);
+
+      $h3.appendChild($i);
+      $list.appendChild($h3);
+      $list.appendChild($item);
+      $section.appendChild($list);
+      $card.appendChild($section);
+      $card.appendChild($addCardForm);
+
+      this._shadowRoot.querySelector('.container').appendChild($card);
     }
+
 
     this.$cards = this._shadowRoot.querySelectorAll('card-items');
 
@@ -151,10 +184,6 @@ class Card extends HTMLElement {
       item.addEventListener('updateCards', this.updateCards.bind(this));
       item.addEventListener('deleteCard', this.deleteCard.bind(this));
     });
-
-    this.$columnForm = this._shadowRoot.querySelector('add-column-form');
-
-    this.$columnForm.addEventListener('addColumn', this.postColumn.bind(this));
 
     this.$listItem = this._shadowRoot.querySelectorAll('add-card-form');
     this.$listItem.forEach((item) => {
