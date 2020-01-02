@@ -1,6 +1,7 @@
 import './components/cardItems.js';
 import './components/addCardForm.js';
 import './components/addColumnForm.js';
+import Services from  './services/services.js';
 
 const template = document.createElement('template');
 
@@ -54,7 +55,6 @@ template.innerHTML = `
 </style>
 <div id="column" class="card">
 <add-column-form></add-column-form>
-
 </div>
 <div class="container">
   </div>
@@ -63,9 +63,10 @@ template.innerHTML = `
 class Card extends HTMLElement {
   constructor() {
     super();
-    // this._shadowRoot = this.attachShadow({ mode: 'open' });
-    this._shadowRoot = this;
+    this._shadowRoot = this.attachShadow({ mode: 'open' });
     this.columns = [];
+    this.services = new Services();
+    console.log(this.services);
   }
 
   connectedCallback() {
@@ -76,68 +77,44 @@ class Card extends HTMLElement {
   }
 
   async getColumns() {
-    const columns = await fetch('http://localhost:3000/columns');
-    this.columns = await columns.json();
-    this._render();
+    try {
+      this.columns = await this.services.getColumns();
+      this._render();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   async postCards(e) {
-    e.stopPropagation();
-    const cards = await fetch('http://localhost:3000/cards', {
-      method: 'post', body: JSON.stringify(e.detail), headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    this.services.postCards(e);
     this.getColumns();
   };
 
   async postColumn(e) {
-    const cards = await fetch('http://localhost:3000/columns', {
-      method: 'post', body: JSON.stringify(e.detail), headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    this.services.postColumn(e);
     this.getColumns();
   };
 
   async updateCards(e) {
-    e.stopPropagation();
-    const cards = await fetch(`http://localhost:3000/cards/${e.detail.id}`, {
-      method: 'put', body: JSON.stringify(e.detail), headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    this.services.updateCards(e);
     this.getColumns();
   };
 
   async deleteCard(e) {
-    e.stopPropagation();
-    const cards = await fetch(`http://localhost:3000/cards/${e.detail.id}`, {
-      method: 'delete', headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    this.services.deleteCard(e);
     this.getColumns();
   };
-
 
   async deleteColumn(e) {
-    e.stopPropagation();
-    await fetch(`http://localhost:3000/columns/${e.target.id}`, {
-      method: 'delete', headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    this.services.deleteColumn(e);
     this.getColumns();
   };
 
-
-
   _render() {
-    if (this._shadowRoot.querySelector('.container'))
+    if (this._shadowRoot.querySelector('.container')) {
       this._shadowRoot.querySelector('.container').innerHTML = '';
+    }
 
-      let innerHTML = '';
     for (let i = 0; i < this.columns.length; i++) {
 
       let $card = document.createElement('div');
@@ -149,23 +126,22 @@ class Card extends HTMLElement {
       let $list = document.createElement('div');
       $list.classList.add("list");
 
-      console.log( this.columns[i].id);
+      console.log(this.columns[i].id);
 
       let $item = document.createElement('card-items');
       $item.setAttribute('id', this.columns[i].id);
 
       let $addCardForm = document.createElement('add-card-form');
-      $addCardForm.setAttribute('id',this.columns[i].id);
+      $addCardForm.setAttribute('id', this.columns[i].id);
 
       let $h3 = document.createElement('h3');
       $h3.classList.add("list-title");
       $h3.textContent = this.columns[i].title;
 
-      let $i = document.createElement('i');
+      let $i = document.createElement('img');
       $i.classList.add("delete");
-      $i.classList.add("fa");
-      $i.classList.add("fa-trash");
       $i.setAttribute('id', this.columns[i].id);
+      $i.setAttribute('src', 'https://img.icons8.com/material-sharp/24/000000/delete-sign.png');
 
       $h3.appendChild($i);
       $list.appendChild($h3);

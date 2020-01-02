@@ -1,6 +1,6 @@
 
 let start = 0;
-let target = undefined;
+let target = null;
 
 const cardtemplate = document.createElement('template');
 
@@ -53,21 +53,20 @@ cardtemplate.innerHTML = `
 class CardItems extends HTMLElement {
   constructor() {
     super();
-    //   this._shadowRoot = this.attachShadow({ mode: 'open' });
-    this._shadowRoot = this;
+    this._shadowRoot = this.attachShadow({ mode: 'open' });
     this.cards = [];
   }
 
   static get observedAttributes() {
     return ['id'];
   }
-  
+
 
   attributeChangedCallback(name, oldValue, newValue) {
-   if(oldValue !== newValue) {
-    this.id = this.getAttribute('id');
-    this.getCards(this.id);
-   }
+    if (oldValue !== newValue) {
+      this.id = this.getAttribute('id');
+      this.getCards(this.id);
+    }
   }
 
   handleEvent(e) {
@@ -113,10 +112,9 @@ class CardItems extends HTMLElement {
   }
 
   delete(e) {
-    console.log(e);
     this.dispatchEvent(new CustomEvent('deleteCard', {
       detail: {
-        "id": parseInt(this.id)
+        "id": parseInt(e.target.id)
       }
     }));
   }
@@ -131,7 +129,10 @@ class CardItems extends HTMLElement {
     for (let i = 0; i < this.cards.length; i++) {
       if (this.cards[i].columnId === parseInt(this.id)) {
         this._shadowRoot.querySelector('.list-items').innerHTML += `
-        <li id="${this.cards[i].id}" desc="${this.cards[i].description}" column="${this.cards[i].columnId}" draggable="true">${this.cards[i].title}<i class="delete fa fa-trash"></i>   </li> 
+        <li id="${this.cards[i].id}" desc="${this.cards[i].description}" column="${this.cards[i].columnId}" draggable="true">
+        ${this.cards[i].title}
+        <img  id="${this.cards[i].id}" class="delete" src="https://img.icons8.com/material-sharp/24/000000/delete-sign.png">
+        </li> 
         `;
       }
     }

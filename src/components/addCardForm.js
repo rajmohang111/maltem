@@ -55,17 +55,6 @@ input[type=submit] {
 </label>
 </form>`;
 
-{/*
-    <button id="add-card" class="add-card-btn btn">Add a card</button>
-
-    <form>
-<ul class="field-list">
-<li><input type="text" name="cardName" id="cardName" placeholder="Name"/></li>
-<li><input type="text" name="cardDescription" id="cardDescription" placeholder="Description"/></li>
-<li><button id="add-card" class="add-card-btn btn">Add a card</button></li>
-</ul>
-</form> */}
-
 class AddCardForm extends HTMLElement {
     constructor() {
         super();
