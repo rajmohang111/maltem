@@ -82,8 +82,8 @@ class AddCardForm extends HTMLElement {
 
     _render() {
         this._shadowRoot.appendChild(cardtemplate.content.cloneNode(true));
-        this.$addCardButton = this._shadowRoot.querySelector('#add-card');
-        this.$addCardButton.addEventListener('click', this.addCard.bind(this));
+        this.$form = this._shadowRoot.querySelector('form');
+        this.$form.addEventListener("submit", this.addCard.bind(this));
     };
 }
 

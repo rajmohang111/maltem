@@ -28,7 +28,28 @@ export default class Services {
           }
         });
       };
-    
+      
+      async getColumnsByName(columnName) {
+        try {
+          const columns = await fetch(`http://localhost:3000/columns?title=${columnName}`);
+          this.columns = await columns.json();
+          return this.columns;
+        } catch (e) {
+          console.log(e);
+        }
+      };
+
+      async getCardsByName(cardName, columnId) {
+        try {
+          const cards = await fetch(`http://localhost:3000/cards?title=${cardName}&columnId=${columnId}`);
+          this.cards = await cards.json();
+          return this.cards;
+        } catch (e) {
+          console.log(e);
+        }
+      };
+
+
       async postColumn(e) {
         await fetch('http://localhost:3000/columns', {
           method: 'post', body: JSON.stringify(e.detail), headers: {

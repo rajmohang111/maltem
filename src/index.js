@@ -5,7 +5,7 @@ import './components/searchForm.js';
 
 import Services from  './services/services.js';
 
-const template = document.createElement('template');
+export const template = document.createElement('template');
 
 template.innerHTML = `
 <style>
@@ -67,7 +67,7 @@ template.innerHTML = `
   </div>
 `;
 
-class Card extends HTMLElement {
+export default class Card extends HTMLElement {
   constructor() {
     super();
     this._shadowRoot = this.attachShadow({ mode: 'open' });
@@ -94,7 +94,6 @@ class Card extends HTMLElement {
   };
 
   async searchCards(e) {
-    console.log(e);
     try {
       this.filterText = e.detail.title;
       this._render();
@@ -104,28 +103,38 @@ class Card extends HTMLElement {
   };
 
   async postCards(e) {
-    this.services.postCards(e);
-    this.getColumns();
+    const data = await this.services.getCardsByName(e.detail.title, e.detail.columnId);
+    if(data.length === 0) {
+    await this.services.postCards(e);
+    await this.getColumns();
+    }else{
+      alert('Card name already exists');
+    }
   };
 
   async postColumn(e) {
-    this.services.postColumn(e);
-    this.getColumns();
+    const data = await this.services.getColumnsByName(e.detail.title);
+    if(data.length === 0) {
+      await this.services.postColumn(e);
+      await this.getColumns();
+    }else{
+      alert('Column name already exists');
+    }
   };
 
   async updateCards(e) {
-    this.services.updateCards(e);
-    this.getColumns();
+    await this.services.updateCards(e);
+    await this.getColumns();
   };
 
   async deleteCard(e) {
-    this.services.deleteCard(e);
-    this.getColumns();
+    await this.services.deleteCard(e);
+    await this.getColumns();
   };
 
   async deleteColumn(e) {
-    this.services.deleteColumn(e);
-    this.getColumns();
+    await this.services.deleteColumn(e);
+    await this.getColumns();
   };
 
   _render() {
