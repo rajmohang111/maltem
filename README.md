@@ -13,5 +13,5 @@ Release Notes:
 5. Card delete and Column delete will work.
 6. Can not add columns or cards with same name.
 
-npm install
-npm start
+1. npm install
+2. npm start
