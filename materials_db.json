@@ -7,10 +7,6 @@
     {
       "title": "raj",
       "id": 3
-    },
-    {
-      "title": "asdas",
-      "id": 4
     }
   ],
   "cards": [
@@ -21,118 +17,28 @@
       "columnId": 3
     },
     {
-      "id": 8,
-      "title": "Card 1",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "columnId": 2
-    },
-    {
-      "title": "Card 4",
-      "description": "Quisque id scelerisque felis, sit amet scelerisque nunc.",
-      "columnId": 2,
-      "id": 11
-    },
-    {
-      "title": "Card 2",
-      "description": "Quisque et pellentesque sem.",
-      "columnId": 2,
-      "id": 15
-    },
-    {
-      "title": "Card 2",
-      "description": "Quisque et pellentesque sem.",
-      "columnId": 2,
-      "id": 17
-    },
-    {
-      "title": "Card 2",
-      "description": "Quisque et pellentesque sem.",
-      "columnId": 2,
-      "id": 19
-    },
-    {
-      "title": "Card 2",
-      "description": "Quisque et pellentesque sem.",
-      "columnId": 2,
-      "id": 20
-    },
-    {
-      "title": "Card 2",
-      "description": "Quisque et pellentesque sem.",
-      "columnId": 2,
-      "id": 21
-    },
-    {
-      "title": "Card 3",
-      "description": "Nulla porttitor erat a sollicitudin volutpat.",
-      "columnId": 2,
-      "id": 22
-    },
-    {
       "title": "Card 2",
       "description": "Quisque et pellentesque sem.",
       "columnId": 2,
       "id": 24
     },
     {
+      "id": 25,
       "title": "Card 2",
       "description": "Quisque et pellentesque sem.",
-      "columnId": 2,
-      "id": 25
+      "columnId": 3
     },
     {
-      "title": "Card 2",
-      "description": "Quisque et pellentesque sem.",
-      "columnId": 2,
-      "id": 26
-    },
-    {
+      "id": 28,
       "title": "Card 3",
       "description": "Nulla porttitor erat a sollicitudin volutpat.",
-      "columnId": 2,
-      "id": 27
-    },
-    {
-      "title": "Card 3",
-      "description": "Nulla porttitor erat a sollicitudin volutpat.",
-      "columnId": 2,
-      "id": 28
-    },
-    {
-      "title": "Card 3",
-      "description": "Nulla porttitor erat a sollicitudin volutpat.",
-      "columnId": 2,
-      "id": 29
+      "columnId": 3
     },
     {
       "title": "Card 3",
       "description": "Nulla porttitor erat a sollicitudin volutpat.",
       "columnId": 2,
       "id": 30
-    },
-    {
-      "title": "Card 2",
-      "description": "Quisque et pellentesque sem.",
-      "columnId": 2,
-      "id": 31
-    },
-    {
-      "title": {},
-      "description": "moha",
-      "columnId": 2,
-      "id": 32
-    },
-    {
-      "title": "rajm",
-      "description": "mohan",
-      "columnId": 2,
-      "id": 33
-    },
-    {
-      "title": "",
-      "description": "",
-      "columnId": 2,
-      "id": 34
     },
     {
       "title": "asasds",
@@ -151,12 +57,6 @@
       "description": "asdasd",
       "columnId": 2,
       "id": 37
-    },
-    {
-      "title": "RR",
-      "description": "R",
-      "columnId": 2,
-      "id": 38
     },
     {
       "title": "asdasasd",
@@ -321,22 +221,10 @@
       "id": 102
     },
     {
-      "title": "d",
-      "description": "f",
-      "columnId": 3,
-      "id": 105
-    },
-    {
       "title": "mm",
       "description": ",,",
       "columnId": 3,
       "id": 106
-    },
-    {
-      "title": "kjkl",
-      "description": "lkjl",
-      "columnId": 3,
-      "id": 107
     }
   ]
 }

@@ -10,6 +10,16 @@ export default class Services {
           console.log(e);
         }
       };
+
+      async getCards(text) {
+        try {
+          const columns = await fetch(`http://localhost:3000/cards?description=${text}`);
+          this.columns = await columns.json();
+          return this.columns;
+        } catch (e) {
+          console.log(e);
+        }
+      };
     
       async postCards(e) {
         await fetch('http://localhost:3000/cards', {
@@ -44,7 +54,7 @@ export default class Services {
       };
     
     
-      async deleteColumn() {
+      async deleteColumn(e) {
         await fetch(`http://localhost:3000/columns/${e.target.id}`, {
           method: 'delete', headers: {
             'Content-Type': 'application/json'

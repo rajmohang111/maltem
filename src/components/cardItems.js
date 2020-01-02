@@ -58,7 +58,7 @@ class CardItems extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['id'];
+    return ['id', 'filterText'];
   }
 
 
@@ -72,7 +72,7 @@ class CardItems extends HTMLElement {
   handleEvent(e) {
     this.$listItem.forEach((item) => {
       if (item.id == e.target.id) {
-        item.textContent = this.cards.filter(item => item.id == e.target.id)[0].description;
+        item.querySelector('span').textContent = this.cards.filter(item => item.id == e.target.id)[0].description;
       }
     });
   }
@@ -103,7 +103,7 @@ class CardItems extends HTMLElement {
       this.dispatchEvent(new CustomEvent('updateCards', {
         detail: {
           "id": target.id,
-          "title": target.innerHTML,
+          "title": target.children[0].innerHTML,
           "description": target.attributes.desc.value,
           "columnId": parseInt(this.id)
         }
@@ -120,18 +120,28 @@ class CardItems extends HTMLElement {
   }
 
   _render() {
-    console.log('render');
+    this.filterText = this.getAttribute('filterText');
     this._shadowRoot.appendChild(cardtemplate.content.cloneNode(true));
 
-    if (this._shadowRoot.querySelector('.list-items').innerHTML)
+    if (this._shadowRoot.querySelector('.list-items').innerHTML) {
       this._shadowRoot.querySelector('.list-items').innerHTML = '';
+    }
 
     for (let i = 0; i < this.cards.length; i++) {
-      if (this.cards[i].columnId === parseInt(this.id)) {
+      if (this.filterText != 'undefined' && this.filterText.trim() != '') {
+        if (this.cards[i].description.search(this.filterText) > 0) {
+          this._shadowRoot.querySelector('.list-items').innerHTML += `
+          <li id="${this.cards[i].id}" desc="${this.cards[i].description}" column="${this.cards[i].columnId}" draggable="true">
+          <span id="card-content">${this.cards[i].title}</span>
+          <img  id="${this.cards[i].id}" class="delete" src="https://img.icons8.com/material-sharp/24/000000/delete-sign.png" />
+          </li> 
+          `;
+        }
+      } else {
         this._shadowRoot.querySelector('.list-items').innerHTML += `
         <li id="${this.cards[i].id}" desc="${this.cards[i].description}" column="${this.cards[i].columnId}" draggable="true">
-        ${this.cards[i].title}
-        <img  id="${this.cards[i].id}" class="delete" src="https://img.icons8.com/material-sharp/24/000000/delete-sign.png">
+        <span id="card-content">${this.cards[i].title}</span>
+        <img  id="${this.cards[i].id}" class="delete" src="https://img.icons8.com/material-sharp/24/000000/delete-sign.png" />
         </li> 
         `;
       }
@@ -143,9 +153,8 @@ class CardItems extends HTMLElement {
       item.addEventListener('dragend', this.dragover);
       item.addEventListener('dragover', this.dragover);
       item.addEventListener('drop', this.dragDrop.bind(this));
-      item.children[0].addEventListener('click', this.delete.bind(this))
+      item.children[1].addEventListener('click', this.delete.bind(this))
     });
-    this.$span = this._shadowRoot.querySelector('span');
   };
 
 

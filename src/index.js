@@ -1,6 +1,8 @@
 import './components/cardItems.js';
 import './components/addCardForm.js';
 import './components/addColumnForm.js';
+import './components/searchForm.js';
+
 import Services from  './services/services.js';
 
 const template = document.createElement('template');
@@ -53,10 +55,15 @@ template.innerHTML = `
   float: right;
 }
 </style>
+<div class="container">
 <div id="column" class="card">
 <add-column-form></add-column-form>
 </div>
-<div class="container">
+<div id="search" class="card">
+<search-form></search-form>
+</div>
+</div>
+<div id="container" class="container">
   </div>
 `;
 
@@ -66,19 +73,30 @@ class Card extends HTMLElement {
     this._shadowRoot = this.attachShadow({ mode: 'open' });
     this.columns = [];
     this.services = new Services();
-    console.log(this.services);
   }
 
   connectedCallback() {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this.$columnForm = this._shadowRoot.querySelector('add-column-form');
     this.$columnForm.addEventListener('addColumn', this.postColumn.bind(this));
+    this.$searchForm = this._shadowRoot.querySelector('search-form');
+    this.$searchForm.addEventListener('search', this.searchCards.bind(this));
     this.getColumns();
   }
 
   async getColumns() {
     try {
       this.columns = await this.services.getColumns();
+      this._render();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  async searchCards(e) {
+    console.log(e);
+    try {
+      this.filterText = e.detail.title;
       this._render();
     } catch (e) {
       console.log(e);
@@ -111,8 +129,8 @@ class Card extends HTMLElement {
   };
 
   _render() {
-    if (this._shadowRoot.querySelector('.container')) {
-      this._shadowRoot.querySelector('.container').innerHTML = '';
+    if (this._shadowRoot.querySelector('#container')) {
+      this._shadowRoot.querySelector('#container').innerHTML = '';
     }
 
     for (let i = 0; i < this.columns.length; i++) {
@@ -130,6 +148,7 @@ class Card extends HTMLElement {
 
       let $item = document.createElement('card-items');
       $item.setAttribute('id', this.columns[i].id);
+      $item.setAttribute('filterText', this.filterText);
 
       let $addCardForm = document.createElement('add-card-form');
       $addCardForm.setAttribute('id', this.columns[i].id);
@@ -150,7 +169,7 @@ class Card extends HTMLElement {
       $card.appendChild($section);
       $card.appendChild($addCardForm);
 
-      this._shadowRoot.querySelector('.container').appendChild($card);
+      this._shadowRoot.querySelector('#container').appendChild($card);
     }
 
 
