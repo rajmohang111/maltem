@@ -20,5 +20,6 @@ git clone https://github.com/rajmohang111/maltem.git
 
 ```bash
 npm install
+npm run server
 npm start
 ```
