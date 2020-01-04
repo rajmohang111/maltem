@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js --mode development",
     "test": "jest",
-    "eslint": "eslint ./src"
+    "eslint": "eslint ./src",
+    "server": "json-server ./materials_db.json"
   },
   "keywords": [],
   "devDependencies": {
