@@ -46,7 +46,7 @@ class AddColumnForm extends HTMLElement {
 
     connectedCallback() {
         this._render();
-    };
+    }
 
     _render() {
         this._shadowRoot.appendChild(columnTemplate.content.cloneNode(true));
@@ -64,7 +64,7 @@ class AddColumnForm extends HTMLElement {
                 this._shadowRoot.querySelector('#cardName').value = '';
             }
         });
-    };
+    }
 }
 
 window.customElements.define('add-column-form', AddColumnForm);

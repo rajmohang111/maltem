@@ -47,7 +47,7 @@ class AddColumnForm extends HTMLElement {
 
     connectedCallback() {
         this._render();
-    };
+    }
 
     _render() {
         this._shadowRoot.appendChild(columnTemplate.content.cloneNode(true));
@@ -56,7 +56,6 @@ class AddColumnForm extends HTMLElement {
 
         this.$clearCard.addEventListener("click", (e) => {
             e.preventDefault();
-            const searchText = this._shadowRoot.querySelector('#searchText').value;
                 this.dispatchEvent(new CustomEvent('search', {
                     detail: {
                         title: '',
@@ -75,7 +74,7 @@ class AddColumnForm extends HTMLElement {
                 }));
             }
         });
-    };
+    }
 }
 
 window.customElements.define('search-form', AddColumnForm);

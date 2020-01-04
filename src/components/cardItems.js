@@ -77,15 +77,11 @@ class CardItems extends HTMLElement {
     });
   }
 
-  connectedCallback() {
-
-  };
-
   async getCards(id) {
     const cards = await fetch(`http://localhost:3000/cards?columnId=${id}`);
     this.cards = await cards.json();
     this._render();
-  };
+  }
 
 
   dragstart(e) {
@@ -155,7 +151,7 @@ class CardItems extends HTMLElement {
       item.addEventListener('drop', this.dragDrop.bind(this));
       item.children[1].addEventListener('click', this.delete.bind(this))
     });
-  };
+  }
 
 
 }

@@ -91,7 +91,7 @@ export default class Card extends HTMLElement {
     } catch (e) {
       console.log(e);
     }
-  };
+  }
 
   async searchCards(e) {
     try {
@@ -100,7 +100,7 @@ export default class Card extends HTMLElement {
     } catch (e) {
       console.log(e);
     }
-  };
+  }
 
   async postCards(e) {
     const data = await this.services.getCardsByName(e.detail.title, e.detail.columnId);
@@ -110,7 +110,7 @@ export default class Card extends HTMLElement {
     }else{
       alert('Card name already exists');
     }
-  };
+  }
 
   async postColumn(e) {
     const data = await this.services.getColumnsByName(e.detail.title);
@@ -120,22 +120,22 @@ export default class Card extends HTMLElement {
     }else{
       alert('Column name already exists');
     }
-  };
+  }
 
   async updateCards(e) {
     await this.services.updateCards(e);
     await this.getColumns();
-  };
+  }
 
   async deleteCard(e) {
     await this.services.deleteCard(e);
     await this.getColumns();
-  };
+  }
 
   async deleteColumn(e) {
     await this.services.deleteColumn(e);
     await this.getColumns();
-  };
+  }
 
   _render() {
     if (this._shadowRoot.querySelector('#container')) {
@@ -199,7 +199,7 @@ export default class Card extends HTMLElement {
       item.addEventListener('click', this.deleteColumn.bind(this));
     });
 
-  };
+  }
 }
 
 window.customElements.define('maltem-card', Card);

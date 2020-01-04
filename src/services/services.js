@@ -9,7 +9,7 @@ export default class Services {
         } catch (e) {
           console.log(e);
         }
-      };
+      }
 
       async getCards(text) {
         try {
@@ -19,7 +19,7 @@ export default class Services {
         } catch (e) {
           console.log(e);
         }
-      };
+      }
     
       async postCards(e) {
         await fetch('http://localhost:3000/cards', {
@@ -27,7 +27,7 @@ export default class Services {
             'Content-Type': 'application/json'
           }
         });
-      };
+      }
       
       async getColumnsByName(columnName) {
         try {
@@ -37,7 +37,7 @@ export default class Services {
         } catch (e) {
           console.log(e);
         }
-      };
+      }
 
       async getCardsByName(cardName, columnId) {
         try {
@@ -47,7 +47,7 @@ export default class Services {
         } catch (e) {
           console.log(e);
         }
-      };
+      }
 
 
       async postColumn(e) {
@@ -56,7 +56,7 @@ export default class Services {
             'Content-Type': 'application/json'
           }
         });
-      };
+      }
     
       async updateCards(e) {
         await fetch(`http://localhost:3000/cards/${e.detail.id}`, {
@@ -64,7 +64,7 @@ export default class Services {
             'Content-Type': 'application/json'
           }
         });
-      };
+      }
     
       async deleteCard(e) {
         await fetch(`http://localhost:3000/cards/${e.detail.id}`, {
@@ -72,7 +72,7 @@ export default class Services {
             'Content-Type': 'application/json'
           }
         });
-      };
+      }
     
     
       async deleteColumn(e) {
@@ -81,5 +81,5 @@ export default class Services {
             'Content-Type': 'application/json'
           }
         });
-      };
+      }
 }

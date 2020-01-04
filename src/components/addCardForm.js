@@ -63,7 +63,7 @@ class AddCardForm extends HTMLElement {
 
     connectedCallback() {
         this._render();
-    };
+    }
 
     addCard(e) {
         e.preventDefault();
@@ -78,13 +78,13 @@ class AddCardForm extends HTMLElement {
                 }
             }));
         }
-    };
+    }
 
     _render() {
         this._shadowRoot.appendChild(cardtemplate.content.cloneNode(true));
         this.$form = this._shadowRoot.querySelector('form');
         this.$form.addEventListener("submit", this.addCard.bind(this));
-    };
+    }
 }
 
 window.customElements.define('add-card-form', AddCardForm);
