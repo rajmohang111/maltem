@@ -12,6 +12,7 @@ Release Notes:
 4. Search for Cards.5.Drag and drop cards. (After dragging need to drop top of another column cards, wanted to do more on design for drag and drop and didn't had the time)
 5. Card delete and Column delete will work.
 6. Can not add columns or cards with same name.
+7. Using https://www.cypress.io/ for end to end testing.
 
 
 ```bash
