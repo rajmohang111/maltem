@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js --mode development",
-    "test": "jest",
+    "test": "cypress open",
     "eslint": "eslint ./src",
     "server": "json-server ./materials_db.json"
   },
@@ -14,15 +14,16 @@
     "@babel/core": "^7.7.7",
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.7",
-    "@testing-library/dom": "^6.11.0",
     "babel-jest": "^24.9.0",
+    "cypress": "^3.8.1",
     "eslint": "^6.8.0",
     "jest": "^24.9.0",
-    "jsdom": "^15.2.1",
     "json-server": "^0.15.1",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "bower": "^1.8.8",
+  }
 }
