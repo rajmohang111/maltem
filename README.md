@@ -22,4 +22,5 @@ git clone https://github.com/rajmohang111/maltem.git
 npm install
 npm run server
 npm start
+npm run test
 ```
